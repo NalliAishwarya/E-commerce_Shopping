@@ -10,8 +10,21 @@ const path = require("path");
 const cors = require("cors");
 
 app.use(express.json());
+
+// Configure CORS
+const allowedOrigins = [
+    'https://e-commerce-shopping-frontend.onrender.com',
+    'https://e-commerce-shopping-admin.onrender.com'
+];
+
 app.use(cors({
-    origin: 'https://e-commerce-shopping-frontend.onrender.com'  // Replace with your frontend URL
+    origin: function(origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
 }));
 
 // Database connection with MongoDB
@@ -371,6 +384,7 @@ app.listen(port, (error) => {
         console.log("Error: " + error);
     }
 });
+
 
 //crct code before deploy
 // require('dotenv').config();
