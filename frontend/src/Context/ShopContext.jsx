@@ -142,7 +142,7 @@ const ShopContextProvider = (props) => {
     const [wishlistItems, setWishlistItems] = useState(getDefaultWishlist());
 
     useEffect(() => {
-        fetch('http://localhost:4000/allproducts')
+        fetch('https://e-commerce-shopping-backend.onrender.com/allproducts')
             .then((response) => response.json())
             .then((data) => setAll_Product(data));
 
