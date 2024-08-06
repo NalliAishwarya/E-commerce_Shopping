@@ -1,3 +1,17 @@
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import App from './App'; // your main component
+// import ShopContextProvider from './Context/ShopContext';
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <ShopContextProvider>
+//       <App />
+//     </ShopContextProvider>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
