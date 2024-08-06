@@ -49,11 +49,24 @@ const upload = multer({ storage: storage });
 app.use('/images', express.static(path.join(__dirname, 'upload/images')));
 
 // Creating upload endpoint for images
+// app.post("/upload", upload.single('product'), (req, res) => {
+//     res.json({
+//         success: 1,
+//         image_url: `https://e-commerce-shopping-backend.onrender.com/images/${req.file.filename}`
+//     });
+// });
 app.post("/upload", upload.single('product'), (req, res) => {
-    res.json({
-        success: 1,
-        image_url: `https://e-commerce-shopping-backend.onrender.com/images/${req.file.filename}`
-    });
+    if (req.file && req.file.filename) {
+        res.json({
+            success: 1,
+            image_url: `https://e-commerce-shopping-backend.onrender.com/images/${req.file.filename}`
+        });
+    } else {
+        res.status(400).json({
+            success: 0,
+            error: "Image upload failed"
+        });
+    }
 });
 
 // Schema for creating products
