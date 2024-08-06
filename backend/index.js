@@ -307,20 +307,74 @@ app.post('/login', async (req, res) => {
 });
 
 // Creating endpoint for new collection data
+// app.get('/newcollections', async (req, res) => {
+//     let products = await Product.find({});
+//     let newcollection = products.slice(1).slice(-8);
+//     console.log("newcollections fetched");
+//     res.send(newcollection);
+// });
 app.get('/newcollections', async (req, res) => {
-    let products = await Product.find({});
-    let newcollection = products.slice(1).slice(-8);
-    console.log("newcollections fetched");
-    res.send(newcollection);
+    try {
+        let products = await Product.find({});
+        let newcollection = products.slice(1).slice(-8).map(product => {
+            let updatedImage = product.image;
+            if (updatedImage.startsWith('http://localhost:4000')) {
+                updatedImage = updatedImage.replace('http://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+            if (updatedImage.startsWith('https://localhost:4000')) {
+                updatedImage = updatedImage.replace('https://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+            return {
+                ...product.toObject(),
+                image: updatedImage
+            };
+        });
+        console.log("New collections fetched");
+        res.send(newcollection);
+    } catch (error) {
+        console.error('Error fetching new collections:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Server error'
+        });
+    }
 });
 
+
 // Creating endpoint for popular in women 
+// app.get('/popularinwomen', async (req, res) => {
+//     let products = await Product.find({ category: "women" });
+//     let popular_in_women = products.slice(0, 4);
+//     console.log("Popular in women fetched");
+//     res.send(popular_in_women);
+// });
 app.get('/popularinwomen', async (req, res) => {
-    let products = await Product.find({ category: "women" });
-    let popular_in_women = products.slice(0, 4);
-    console.log("Popular in women fetched");
-    res.send(popular_in_women);
+    try {
+        let products = await Product.find({ category: "women" });
+        let popular_in_women = products.slice(0, 4).map(product => {
+            let updatedImage = product.image;
+            if (updatedImage.startsWith('http://localhost:4000')) {
+                updatedImage = updatedImage.replace('http://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+            if (updatedImage.startsWith('https://localhost:4000')) {
+                updatedImage = updatedImage.replace('https://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+            return {
+                ...product.toObject(),
+                image: updatedImage
+            };
+        });
+        console.log("Popular in women fetched");
+        res.send(popular_in_women);
+    } catch (error) {
+        console.error('Error fetching popular in women products:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Server error'
+        });
+    }
 });
+
 
 // Creating middleware to fetch user
 const fetchUser = async (req, res, next) => {
