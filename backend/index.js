@@ -13,8 +13,8 @@ app.use(express.json());
 
 // Configure CORS
 const allowedOrigins = [
-    'https://e-commerce-shopping-frontend.onrender.com',
-    'https://e-commerce-shopping-admin.onrender.com'
+    `https://e-commerce-shopping-frontend.onrender.com`,
+    `https://e-commerce-shopping-admin.onrender.com`
 ];
 
 app.use(cors({
