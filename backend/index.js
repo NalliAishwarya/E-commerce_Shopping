@@ -145,11 +145,42 @@ app.post('/removeproduct', async (req, res) => {
 });
 
 // Creating API for getting all products
+// app.get('/allproducts', async (req, res) => {
+//     let products = await Product.find({});
+//     console.log("All products fetched");
+//     res.send(products);
+// });
 app.get('/allproducts', async (req, res) => {
-    let products = await Product.find({});
-    console.log("All products fetched");
-    res.send(products);
+    try {
+        let products = await Product.find({});
+        let updatedProducts = products.map(product => {
+            let updatedImage = product.image;
+
+            // Replace local development URL with production URL
+            if (updatedImage.startsWith('http://localhost:4000')) {
+                updatedImage = updatedImage.replace('http://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+
+            // If using HTTPS in production or other URL schemes
+            if (updatedImage.startsWith('https://localhost:4000')) {
+                updatedImage = updatedImage.replace('https://localhost:4000', 'https://e-commerce-shopping-backend.onrender.com');
+            }
+
+            return {
+                ...product.toObject(),
+                image: updatedImage
+            };
+        });
+        res.send(updatedProducts);
+    } catch (error) {
+        console.error('Error fetching products:', error); // Log error
+        res.status(500).json({
+            success: false,
+            error: 'Server error'
+        });
+    }
 });
+
 
 // Schema creation for user model
 const UserSchema = new mongoose.Schema({
